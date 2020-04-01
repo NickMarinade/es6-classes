@@ -8,9 +8,19 @@ const literal1 = {
   },
   addString: function (newStr) {
     // ... code ...
+    if (Number(newStr)) {
+      if (newStr % 2 === 0) {
+        this.state.evens.push(newStr);
+      } else if (newStr % 2 !== 0) {
+        this.state.odds.push(newStr);
+      }
+    } else {
+      this.state.nanys.push(newStr);
+    }
   },
   all: function (selection) {
     // ... code ...
+    return this.state[selection];
   }
 };
 
@@ -22,14 +32,47 @@ const literal2 = {
   },
   addString: function (newStr) {
     // ... code ...
+    if (Number(newStr)) {
+      if (newStr % 2 === 0) {
+        this.state.evens.push(newStr);
+      } else if (newStr % 2 !== 0) {
+        this.state.odds.push(newStr);
+      }
+    } else {
+      this.state.nanys.push(newStr);
+    }
   },
   all: function (selection) {
     // ... code ...
+    return this.state[selection];
   }
 };
 
 // the solution
+class Stringanizer {
+  constructor(state = {}) {
+    this.state = state;
+  }
+  addString(newStr) {
 
+    if (Number(newStr)) {
+      if (newStr % 2 === 0) {
+        this.state.evens.push(newStr);
+      } else if (newStr % 2 !== 0) {
+        this.state.odds.push(newStr);
+      }
+    } else {
+      this.state.nanys.push(newStr);
+    }
+  }
+  all(selection) {
+    return this.state[selection];
+  }
+};
+
+const instanceA = new Stringanizer({"evens": ["2", ""], "odds": ["3"], "nanys": ["e"]});
+
+const instanceB = new Stringanizer({"evens": ["-0"], "odds": ["5"], "nanys": ["!"]});
 
 // the tests
 
