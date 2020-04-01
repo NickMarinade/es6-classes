@@ -1,6 +1,6 @@
 # es6-classes/
 
-> 2020-3-31 22:51:30 
+> 2020-4-1 22:07:39 
 
 ## literals-to-class/ - error
 
@@ -9,7 +9,7 @@
 ### files
 
 * [challenge-1.js](#challenge-1js---pass) - pass
-* [challenge-2.js](#challenge-2js---error) - error
+* [challenge-2.js](#challenge-2js---pass) - pass
 * [challenge-3.js](#challenge-3js---error) - error
 * [challenge-4.js](#challenge-4js---error) - error
 * [example.js](#examplejs---pass) - pass
@@ -123,28 +123,27 @@ console.assert(test7b, 'Test 7.B');
 
 ---
 
-## challenge-2.js - error
+## challenge-2.js - pass
 
 * [review source](challenge-2.js)
 
 ```txt
 + PASS: Test 1.A - instanceof
 + PASS: Test 1.B 
-- FAIL: Test 2.A - own properties
-- FAIL: Test 2.B
++ PASS: Test 2.A - own properties
++ PASS: Test 2.B
 + PASS: Test 3.A - not-own properties
 + PASS: Test 3.B
-TypeError: Cannot read property 'max' of undefined
-    at Object.<anonymous> ( [...] \literals-to-class\challenge-2.js:54:32)
-    at Module._compile (internal/modules/cjs/loader.js:959:30)
-    at Object.Module._extensions..js (internal/modules/cjs/loader.js:995:10)
-    at Module.load (internal/modules/cjs/loader.js:815:32)
-    at Function.Module._load (internal/modules/cjs/loader.js:727:14)
-    at Module.require (internal/modules/cjs/loader.js:852:19)
-    at require (internal/modules/cjs/helpers.js:74:18)
-    at evaluateFile ( [...] \review.js:101:5)
-    at  [...] \review.js:139:28
-    at Array.map (<anonymous>)
++ PASS: Test 4.A - initial values
++ PASS: Test 4.B
++ PASS: Test 5.A - get spread
++ PASS: Test 5.B
++ PASS: Test 6.A - addNumber
++ PASS: Test 6.B
++ PASS: Test 7.A - get spread
++ PASS: Test 7.B
++ PASS: Test 8.A - addNumber
++ PASS: Test 8.B
 ```
 
 ```js
@@ -156,10 +155,16 @@ const literalA = {
     min: Infinity
   },
   get spread() {
-    return this.state.min - this.state.min;
+    return this.state.max - this.state.min;
   },
   addNumber(newNum) {
     // ... code ...
+    if (newNum > this.state.max) {
+      this.state.max = newNum
+    }
+    if (newNum < this.min) {
+      this.state.min = newNum
+    }
   }
 };
 
@@ -169,16 +174,38 @@ const literalB = {
     min: Infinity
   },
   get spread() {
-    return this.state.min - this.state.min;
+    return this.state.max - this.state.min;
   },
   addNumber(newNum) {
     // ... code ...
+    if (newNum > this.state.max) {
+      this.state.max = newNum
+    }
+    if (newNum < this.min) {
+      this.state.min = newNum
+    }
   }
 };
 
 // the solution
 
-class MaxMin { };
+class MaxMin {
+  state = {
+    max: -Infinity,
+    min: Infinity
+  };
+  get spread() {
+    return this.state.max - this.state.min;
+  }
+  addNumber(newNum) {
+    if (newNum > this.state.max) {
+      this.state.max = newNum
+    }
+    if (newNum < this.state.min) {
+      this.state.min = newNum
+    }
+  }
+ };
 
 // these two lines are correct! don't change them
 const instanceA = new MaxMin();
