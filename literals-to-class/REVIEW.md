@@ -1,8 +1,8 @@
 # es6-classes/
 
-> 2020-4-1 22:41:16 
+> 2020-4-1 23:40:17 
 
-## literals-to-class/ - error
+## literals-to-class/ - pass
 
 * [../REVIEW.md](../REVIEW.md)
 
@@ -11,7 +11,7 @@
 * [challenge-1.js](#challenge-1js---pass) - pass
 * [challenge-2.js](#challenge-2js---pass) - pass
 * [challenge-3.js](#challenge-3js---pass) - pass
-* [challenge-4.js](#challenge-4js---error) - error
+* [challenge-4.js](#challenge-4js---pass) - pass
 * [example.js](#examplejs---pass) - pass
 
 ---
@@ -435,22 +435,33 @@ console.assert(test8b, 'Test 8.B');
 
 ---
 
-## challenge-4.js - error
+## challenge-4.js - pass
 
 * [review source](challenge-4.js)
 
 ```txt
-ReferenceError: instanceA is not defined
-    at Object.<anonymous> ( [...] \literals-to-class\challenge-4.js:36:16)
-    at Module._compile (internal/modules/cjs/loader.js:959:30)
-    at Object.Module._extensions..js (internal/modules/cjs/loader.js:995:10)
-    at Module.load (internal/modules/cjs/loader.js:815:32)
-    at Function.Module._load (internal/modules/cjs/loader.js:727:14)
-    at Module.require (internal/modules/cjs/loader.js:852:19)
-    at require (internal/modules/cjs/helpers.js:74:18)
-    at evaluateFile ( [...] \review.js:101:5)
-    at  [...] \review.js:139:28
-    at Array.map (<anonymous>)
++ PASS: Test 1.A - instanceof
++ PASS: Test 1.B 
++ PASS: Test 2.A - own properties
++ PASS: Test 2.B
++ PASS: Test 3.A - not-own properties
++ PASS: Test 3.B
++ PASS: Test 4.A - initial values
++ PASS: Test 4.B
++ PASS: Test 5.A - .all("evens")
++ PASS: Test 5.B
++ PASS: Test 6.A - .all("odds")
++ PASS: Test 6.B
++ PASS: Test 7.A - .all("nanys")
++ PASS: Test 7.B
++ PASS: Test 8.A - new values
++ PASS: Test 8.B
++ PASS: Test 9.A - .all("evens")
++ PASS: Testt 9.B
++ PASS: Test 10.A - .all("odds")
++ PASS: Test 10.B
++ PASS: Test 11.A - .all("nanys")
++ PASS: Test 11.B
 ```
 
 ```js
@@ -464,9 +475,19 @@ const literal1 = {
   },
   addString: function (newStr) {
     // ... code ...
+    if (Number(newStr)) {
+      if (newStr % 2 === 0) {
+        this.state.evens.push(newStr);
+      } else if (newStr % 2 !== 0) {
+        this.state.odds.push(newStr);
+      }
+    } else {
+      this.state.nanys.push(newStr);
+    }
   },
   all: function (selection) {
     // ... code ...
+    return this.state[selection];
   }
 };
 
@@ -478,14 +499,47 @@ const literal2 = {
   },
   addString: function (newStr) {
     // ... code ...
+    if (Number(newStr)) {
+      if (newStr % 2 === 0) {
+        this.state.evens.push(newStr);
+      } else if (newStr % 2 !== 0) {
+        this.state.odds.push(newStr);
+      }
+    } else {
+      this.state.nanys.push(newStr);
+    }
   },
   all: function (selection) {
     // ... code ...
+    return this.state[selection];
   }
 };
 
 // the solution
+class Stringanizer {
+  constructor(state = {}) {
+    this.state = state;
+  }
+  addString(newStr) {
 
+    if (Number(newStr)) {
+      if (newStr % 2 === 0) {
+        this.state.evens.push(newStr);
+      } else if (newStr % 2 !== 0) {
+        this.state.odds.push(newStr);
+      }
+    } else {
+      this.state.nanys.push(newStr);
+    }
+  }
+  all(selection) {
+    return this.state[selection];
+  }
+};
+
+const instanceA = new Stringanizer({"evens": ["2", ""], "odds": ["3"], "nanys": ["e"]});
+
+const instanceB = new Stringanizer({"evens": ["-0"], "odds": ["5"], "nanys": ["!"]});
 
 // the tests
 
