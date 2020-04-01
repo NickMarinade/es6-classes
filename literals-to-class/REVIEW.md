@@ -1,6 +1,6 @@
 # es6-classes/
 
-> 2020-4-1 22:07:39 
+> 2020-4-1 22:41:16 
 
 ## literals-to-class/ - error
 
@@ -10,7 +10,7 @@
 
 * [challenge-1.js](#challenge-1js---pass) - pass
 * [challenge-2.js](#challenge-2js---pass) - pass
-* [challenge-3.js](#challenge-3js---error) - error
+* [challenge-3.js](#challenge-3js---pass) - pass
 * [challenge-4.js](#challenge-4js---error) - error
 * [example.js](#examplejs---pass) - pass
 
@@ -263,30 +263,27 @@ console.assert(test8b, 'Test 8.B');
 
 ---
 
-## challenge-3.js - error
+## challenge-3.js - pass
 
 * [review source](challenge-3.js)
 
 ```txt
 + PASS: Test 1.A - instanceof
 + PASS: Test 1.B 
-- FAIL: Test 2.A - own properties
-- FAIL: Test 2.B
++ PASS: Test 2.A - own properties
++ PASS: Test 2.B
 + PASS: Test 3.A - not-own properties
 + PASS: Test 3.B
-- FAIL: Test 4.A - initial values
-- FAIL: Test 4.B
-TypeError: instanceA.write is not a function
-    at Object.<anonymous> ( [...] \literals-to-class\challenge-3.js:70:11)
-    at Module._compile (internal/modules/cjs/loader.js:959:30)
-    at Object.Module._extensions..js (internal/modules/cjs/loader.js:995:10)
-    at Module.load (internal/modules/cjs/loader.js:815:32)
-    at Function.Module._load (internal/modules/cjs/loader.js:727:14)
-    at Module.require (internal/modules/cjs/loader.js:852:19)
-    at require (internal/modules/cjs/helpers.js:74:18)
-    at evaluateFile ( [...] \review.js:101:5)
-    at  [...] \review.js:139:28
-    at Array.map (<anonymous>)
++ PASS: Test 4.A - initial values
++ PASS: Test 4.B
++ PASS: Test 5.A - write
++ PASS: Test 5.B
++ PASS: Test 6.A - read
++ PASS: Test 6.B
++ PASS: Test 7.A - remove
++ PASS: Test 7.B
++ PASS: Test 8.A - final values
++ PASS: Test 8.B
 ```
 
 ```js
@@ -299,19 +296,24 @@ const literalA = {
   },
   write: function (key, value) {
     // ... code ...
+    this.entries[key] = value;
   },
   read: function (key) {
     if (this.entries.hasOwnProperty(key)) {
       // ... code ...
+      return this.entries[key];
     } else {
       // ... code ...
+      return `no key: ${key}`;
     }
   },
   remove: function (key) {
     if (this.entries.hasOwnProperty(key)) {
       // ... code ...
+      return delete this.entries[key];
     } else {
       // ... code ...
+      return false;
     }
   }
 };
@@ -324,14 +326,54 @@ const literalB = {
     groucho: 'marx',
     zeppo: 'marx',
   },
-  write: function (key, value) { },
-  read: function (key) { },
-  remove: function (key) { }
+  write: function (key, value) {
+    this.entries[key] = value
+   },
+  read: function (key) {
+    if (this.entries.hasOwnProperty(key)) {
+      // ... code ...
+      return this.entries[key];
+    } else {
+      // ... code ...
+      return `no key: ${key}`;
+    }
+   },
+  remove: function (key) {
+    if (this.entries.hasOwnProperty(key)) {
+      // ... code ...
+      return delete this.entries[key];
+    } else {
+      // ... code ...
+      return false;
+    }
+   }
 };
 
 // the solution
 
-class EntriesManager { };
+class EntriesManager {
+  constructor(entries = {}) {
+    this.entries = entries;
+  }
+  write (key, value) {
+  this.entries[key] = value;
+  }
+  read (key) {
+    if (this.entries.hasOwnProperty(key)) {
+      return this.entries[key];
+    } else {
+      throw new Error(`no key: ${key}`);
+    }
+  }
+  remove (key) {
+    if (this.entries.hasOwnProperty(key)) {
+      return delete this.entries[key];
+    } else {
+      return false;
+    }
+  }
+
+ };
 
 // these two lines are correct!  don't change them
 const instanceA = new EntriesManager({ a: 1, b: 2 });
